@@ -1,15 +1,15 @@
 'use strict';
 
 describe('Module: myApp', function() {
-    this.avLogin = undefined;
+    this.avUserService = undefined;
 
     // load the controller's module
     beforeEach(module('myApp'));
 
-    beforeEach(inject(function(avLogin) {
+    beforeEach(inject(function(avUserService) {
 
-        this.avLogin = avLogin;
-        console.log('avLogin injected', this.avLogin);
+        this.avUserService = avUserService;
+        console.log('avUserService injected', this.avUserService);
     }));
 
     afterEach(function() {
@@ -19,7 +19,7 @@ describe('Module: myApp', function() {
     it('should correctly return mock values on a getAll', inject(function() {
 
         //check that injection works
-        expect(this.avLogin).toBeDefined();
+        expect(this.avUserService).toBeDefined();
 
     }));
 });
