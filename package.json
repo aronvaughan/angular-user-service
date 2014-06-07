@@ -1,0 +1,68 @@
+{
+  "name": "angular-user-service",
+  "version": "0.0.0",
+  "description": "angular lib for create typical user service (interacts with login/auth to fetch from remote if needed)",
+  "keywords": [
+    "angular",
+    "BackBone",
+    "REST",
+    "service",
+    "javascript",
+    "mock",
+    "quick",
+    "user",
+    "authentication",
+    "login"
+  ],
+  "homepage": "https://github.com/aronvaughan/angular-user-service",
+  "bugs": "https://github.com/aronvaughan/angular-user-service/issues",
+  "author": {
+    "name": "",
+    "email": "",
+    "url": "https://github.com/aronvaughan"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aronvaughan/angular-user-service.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-connect": "~0.5.0",
+    "grunt-contrib-less": "~0.7.0",
+    "grunt-prettify": "latest",
+    "connect-livereload": "~0.3.0",
+    "grunt-bower-install": "~1.0.0",
+    "grunt-open": "~0.2.2",
+    "grunt-karma": "~0.8.0",
+    "grunt-ngmin": "0.0.3",
+    "grunt-bump": "0.0.11",
+    "matchdep": "~0.1.2",
+    "karma-script-launcher": "~0.1.0",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-html2js-preprocessor": "~0.1.0",
+    "karma-jasmine": "~0.1.3",
+    "karma-requirejs": "~0.1.0",
+    "karma-coffee-preprocessor": "~0.1.0",
+    "karma-phantomjs-launcher": "~0.1.0",
+    "karma": "~0.12.0",
+    "grunt-express-server": "~0.4.17"
+  },
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "body-parser": "~1.2.0",
+    "grunt-connect-proxy": "~0.1.10",
+    "protractor": "git://github.com/cesarandreu/protractor.git#9d568edbee95b4eebda7ff8f03c47b01cc3a010c",
+    "grunt-protractor-runner": "~0.2.4"
+  }
+}

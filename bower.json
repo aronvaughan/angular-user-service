@@ -1,0 +1,52 @@
+{
+  "name": "angular-user-service",
+  "version": "0.0.0",
+  "description": "angular lib for create typical user service (interacts with login/auth to fetch from remote if needed)",
+  "keywords": [
+    "angular",
+    "BackBone",
+    "REST",
+    "service",
+    "javascript",
+    "mock",
+    "quick",
+    "user",
+    "authentication",
+    "login"
+  ],
+  "main": "dist/angular-user-service.min.js",
+  "authors": [
+    {
+      "name": "Aron Vaughan",
+      "homepage": "http://www.aronvaughan.com"
+    }
+  ],
+  "licenses": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aronvaughan/angular-user-service.git"
+  },
+  "ignore": [
+    "bower_components",
+    "node_modules",
+    "**/.*"
+  ],
+  "dependencies": {
+    "angular": "latest",
+    "angular-cookies": "1.2.6",
+    "angular-logging": "latest",
+    "lodash": "~2.4.1",
+    "angular-resource": "~1.2.16",
+    "angular-http-auth": "~1.2.1",
+    "angular-login": "*",
+    "angular-rest-service": "*"
+  },
+  "devDependencies": {
+    "angular": "latest",
+    "angular-mocks": "latest",
+    "bootstrap": "latest"
+  },
+  "resolutions": {
+    "angular": "1.2.17"
+  }
+}
