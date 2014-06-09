@@ -130,7 +130,7 @@ angular.module('avaughan.user').provider('avUserService', function () {
             this.userNameVariable
           ]);
           this.getUser();
-          if (this.user) {
+          if (this.user && this.user[this.userNameVariable]) {
             return this.user[this.userNameVariable];
           } else {
             return this.defaultUsername;

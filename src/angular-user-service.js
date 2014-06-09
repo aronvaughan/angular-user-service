@@ -91,7 +91,7 @@ angular.module('avaughan.user').provider('avUserService',
                         var valueOfUserBeforeCall = this.user;
                         this.user = this.resource.get({}, function(value, responseHeaders) {
                             self.logger.debug('userData, fetchUser success callback: ', [value, userService.userNameVariable,
-                                value[self.userNameVariable], responseHeaders,
+                                value[userService.userNameVariable], responseHeaders,
                                 valueOfUserBeforeCall, avLogin.isTokenAvailable($rootScope)
                             ]);
                             if (value !== undefined && value[userService.userNameVariable] !== undefined &&
@@ -141,7 +141,7 @@ angular.module('avaughan.user').provider('avUserService',
                     getUsername: function() {
                         this.logger.debug('getUsername ', [this.user, this.userNameVariable]);
                         this.getUser();
-                        if (this.user) {
+                        if (this.user && this.user[this.userNameVariable]) {
                             return this.user[this.userNameVariable];
                         } else {
                             return this.defaultUsername;
