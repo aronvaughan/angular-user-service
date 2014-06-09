@@ -86,7 +86,7 @@ angular.module('avaughan.user').provider('avUserService', function () {
             self.logger.debug('userData, fetchUser success callback: ', [
               value,
               userService.userNameVariable,
-              value[self.userNameVariable],
+              value[userService.userNameVariable],
               responseHeaders,
               valueOfUserBeforeCall,
               avLogin.isTokenAvailable($rootScope)
