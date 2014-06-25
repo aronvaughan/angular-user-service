@@ -107,7 +107,7 @@ angular.module('avaughan.user').provider('avUserService',
 
                     login: function(username, password) {
                         this.logger.debug('login called', username);
-                        return this.avLogin.login(username, password, $http, $rootScope, $cookieStore);
+                        return this.avLogin.login(username, password, $http, $rootScope, $cookieStore, $location);
                     },
 
                     logout: function() {
