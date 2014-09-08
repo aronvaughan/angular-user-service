@@ -89,9 +89,9 @@ angular.module('avaughan.user').provider('avUserService', function () {
               value[userService.userNameVariable],
               responseHeaders,
               valueOfUserBeforeCall,
-              avLogin.isTokenAvailable($rootScope)
+              avLogin.isTokenAvailable($rootScope, $cookieStore)
             ]);
-            if (value !== undefined && value[userService.userNameVariable] !== undefined && valueOfUserBeforeCall === undefined && avLogin.isTokenAvailable($rootScope)) {
+            if (value !== undefined && value[userService.userNameVariable] !== undefined && valueOfUserBeforeCall === undefined && avLogin.isTokenAvailable($rootScope, $cookieStore)) {
               self.logger.info('detected inital load with user token available');
               avLogin.loginConfirmed(value);
             }
