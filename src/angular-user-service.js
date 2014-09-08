@@ -1,7 +1,6 @@
 'use strict';
 
 /*global angular:true, ServiceContainerConfig: true*/
-
 angular.module('avaughan.user', ['avaughan.logging', 'avaughan.login']);
 
 angular.module('avaughan.user').provider('avUserService',
@@ -92,10 +91,10 @@ angular.module('avaughan.user').provider('avUserService',
                         this.user = this.resource.get({}, function(value, responseHeaders) {
                             self.logger.debug('userData, fetchUser success callback: ', [value, userService.userNameVariable,
                                 value[userService.userNameVariable], responseHeaders,
-                                valueOfUserBeforeCall, avLogin.isTokenAvailable($rootScope)
+                                valueOfUserBeforeCall, avLogin.isTokenAvailable($rootScope, $cookieStore)
                             ]);
                             if (value !== undefined && value[userService.userNameVariable] !== undefined &&
-                                valueOfUserBeforeCall === undefined && avLogin.isTokenAvailable($rootScope)) {
+                                valueOfUserBeforeCall === undefined && avLogin.isTokenAvailable($rootScope, $cookieStore)) {
                                 self.logger.info('detected inital load with user token available');
                                 avLogin.loginConfirmed(value);
                             }

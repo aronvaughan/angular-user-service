@@ -38,7 +38,7 @@
     "lodash": "~2.4.1",
     "angular-resource": "~1.2.16",
     "angular-http-auth": "~1.2.1",
-    "angular-login": "0.0.5",
+    "angular-login": "0.0.8",
     "angular-rest-service": "*"
   },
   "devDependencies": {
