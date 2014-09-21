@@ -112,6 +112,9 @@ angular.module('avaughan.user').provider('avUserService', function () {
         user: undefined,
         defaultUsername: 'Guest',
         userNameVariable: this.userNameVariable,
+        toLogin: function ($location) {
+          this.avLogin.toLogin($location);
+        },
         isLoggedIn: function () {
           this.logger.debug('userService isLoggedIn ', this.getUser());
           return this.getUser() !== undefined && this.getUser()[this.userNameVariable] !== undefined;

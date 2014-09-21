@@ -123,7 +123,7 @@ angular.module('avaughan.user').provider('avUserService',
                     defaultUsername: 'Guest',
                     userNameVariable: this.userNameVariable,
 
-                    toLogin: function ($location) {
+                    toLogin: function($location) {
                         this.avLogin.toLogin($location);
                     },
 
