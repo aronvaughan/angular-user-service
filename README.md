@@ -141,6 +141,22 @@ See example in source code
 
 * initial release
 
+### v 0.0.2
+
+* fix username handling
+
+### v 0.0.3
+
+* updates needed to work with login service 0.0.5
+
+### v 0.0.4
+
+* fix npe on $cookieStore and specify correct version
+
+### v 0.0.5
+
+* add toLogin($location) - function that will force the user to the configured redirectIfTokenNotFoundUrl
+
 ## TODO
 
 * figure out integration tests (angular only allows unit or functional)
