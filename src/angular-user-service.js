@@ -25,8 +25,37 @@ angular.module('avaughan.user').provider('avUserService',
 
         this.userNameVariable = 'username';
 
+        //sometimes the login event is different (and uncustomizalbe) from the user that is loaded via this server
+        // if true, do NOT cache the login event user as the use and instead hit the
+        //userresource url to load the user after a successfull event
+        // if false, DO CACHE the login event data as the user
+        // and call the user resource url to load the user
+        // in this case you will want to bind to 'SERVICE.AVUSERSERVICE.GET.SUCCESS' vs. the raw (and data returned from
+        // the lower level 'event:auth-loginConfirmed' whose user return is NOT the user that we expect
+        this.loginEventDoesNotContainFullUserInfo = false;
+
         var userService = this;
 
+        this.paramInitialize = function(config) {
+            console.log('avaughan.user param initialize called', [config]);
+            if (config.mockData) {
+                this.mockData = config.mockData;
+            }
+            if (config.urlAfterLogin) {
+                this.urlAfterLogin = config.urlAfterLogin;
+            }
+            if (config.userResourceUrl) {
+                this.userResourceUrl = config.userResourceUrl;
+            }
+            if (config.userNameVariable) {
+                this.userNameVariable = config.userNameVariable;
+            }
+            if (config.loginEventDoesNotContainFullUserInfo) {
+                this.loginEventDoesNotContainFullUserInfo = config.loginEventDoesNotContainFullUserInfo;
+            }
+        };
+
+        //DEPRECATED - used param based instead!!!!
         this.initialize = function(userResourceUrl, userNameVariable, urlAfterLogin, mockData) {
             console.log('avaughan.user initialize called', [userResourceUrl, urlAfterLogin, mockData]);
             if (mockData) {
@@ -51,6 +80,7 @@ angular.module('avaughan.user').provider('avUserService',
                 serviceContainerConfig.urlAfterLogin = this.urlAfterLogin;
                 serviceContainerConfig.$location = $location;
                 serviceContainerConfig.avLogin = avLogin;
+                serviceContainerConfig.eventChannel = 'AVUSERSERVICE';
 
                 serviceContainerConfig.mockExtend = {
 
@@ -97,6 +127,12 @@ angular.module('avaughan.user').provider('avUserService',
                                 valueOfUserBeforeCall === undefined && avLogin.isTokenAvailable($rootScope, $cookieStore)) {
                                 self.logger.info('detected inital load with user token available');
                                 avLogin.loginConfirmed(value);
+                            }
+
+                            //send out a success user fetch event
+                            if (value !== undefined) {
+                                self.logger.debug('sending event: get success SERVICE.' + self.eventChannel + '.GET.SUCESS', [value, responseHeaders]);
+                                self.$rootScope.$broadcast('SERVICE.' + self.eventChannel + '.GET.SUCCESS', value);
                             }
                         });
 
@@ -205,8 +241,17 @@ angular.module('avaughan.user').provider('avUserService',
                         this.logger.info('custom initialize hooking up auth events', [dependencies, requirements]);
                         this.$rootScope.$on('event:auth-loginConfirmed', function(event, user) {
                             self.logger.info('event:auth-loginConfirmed user service got session login event ', event);
-                            self.logger.info('user data', user);
-                            self.setUser(user);
+                            self.logger.info('user data, does not contain full info', [user, self.loginEventDoesNotContainFullUserInfo]);
+                            if (self.loginEventDoesNotContainFullUserInfo === true || self.loginEventDoesNotContainFullUserInfo) {
+                                self.logger.info('login does not contain full user info, fetching user');
+                                //force a refetch
+                                self.checkedServer = false;
+                                self.fetchUser();
+                            } else {
+                                self.logger.info('login does contain full user info, caching');
+                                self.setUser(user);
+                            }
+
                         });
 
                         $rootScope.$on('event:auth-logoutConfirmed', function(event, data) {

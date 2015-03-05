@@ -31,7 +31,12 @@ myApp.config(['avLogProvider', 'avLevel', 'avLoginProvider', 'avUserServiceProvi
         avLoginProvider.initialize(loginConfig);
 
         //setup user service with our user url...
-        avUserServiceProvider.initialize('/api/userInfo', 'userName');
+        var userServiceConfig = {
+            userResourceUrl: '/api/userInfo',
+            userNameVariable: 'userName'
+
+        };
+        avUserServiceProvider.paramInitialize(userServiceConfig);
     }
 ]);
 

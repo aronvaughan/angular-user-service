@@ -46,7 +46,12 @@ myApp.config(['avLogProvider', 'avLevel', 'avLoginProvider', 'avUserServiceProvi
     function(avLogProvider, avLevel, avLoginProvider, avUserServiceProvider) {
 
           //setup user service with our user url...
-          avUserServiceProvider.initialize('/api/userInfo', 'userName');
+           var userServiceConfig = {
+                      userResourceUrl: '/api/userInfo',
+                      userNameVariable: 'userName'
+
+          };
+          avUserServiceProvider.paramInitialize(userServiceConfig);    //initialize is now deprecated in favor of an object based initialize
 
 }
 ```
@@ -98,6 +103,8 @@ myApp.config(['avLogProvider', 'avLevel', 'avLoginProvider', 'avUserServiceProvi
             $scope.userInfo = avUserService.login($scope.formData.name, $scope.formData.password);
         };
 
+        //if you have set loginEventDoesNotContainFullUserInfo to true, then you should instead bind to
+        // SERVICE.AVUSERSERVICE.GET.SUCCESS vs. this lower level object
         $rootScope.$on('event:auth-loginConfirmed', function(event, user) {
             logger.info("event:auth-loginConfirmed got session login event ", event);
             logger.info("user data", user);
@@ -157,6 +164,12 @@ See example in source code
 
 * add toLogin($location) - function that will force the user to the configured redirectIfTokenNotFoundUrl
 
+### v 0.0.6
+
+* add param based initialization method - this.paramInitialize(config)
+* deprecated this.initialize method
+* added flag, loginEventDoesNotContainFullUserInfo to config that specifies that the lower level avLogin event is NOT the user (the default) and this service should load the user on the login event from avLogin
+
 ## TODO
 
 * figure out integration tests (angular only allows unit or functional)
@@ -193,4 +206,11 @@ to see the example app
 
 1. grunt serve
 2. make sure you have developer tools/firebug, etc.. open so you can see console logs
+
+to create another version
+
+1. grunt test
+2. grunt build
+3. check in files
+3. grunt release
 

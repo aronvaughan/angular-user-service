@@ -52,7 +52,16 @@ Is Logged In: {{isLoggedIn()}}
                     </button>
                     <br/>
                     Secure Call Result: {{result}}
-  <!-- build:js scripts/components.min.js -->
+
+      <br/>
+      <br/>
+      <br/>
+      <input name='obj1.data' type="checkbox" ng-model="loginEventDoesNotContainFullUserInfo" ng-true-value="1" ng-false-value="0">Login Event Dones Not Contain Full User
+      <button ng-click="setLoginEventContainsFullUser()" type="button" class="btn">
+          Set Value
+      </button>
+
+      <!-- build:js scripts/components.min.js -->
   <!-- bower:js -->
   <script src="../../bower_components/angular/angular.js"></script>
   <script src="../../bower_components/angular-cookies/angular-cookies.js"></script>

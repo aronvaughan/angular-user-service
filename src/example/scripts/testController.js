@@ -25,6 +25,13 @@
                 return loggedIn;
             };
 
+            $scope.loginEventDoesNotContainFullUserInfo = false;
+
+            $scope.setLoginEventContainsFullUser = function() {
+                logger.debug("setting loginEventDoesNotContainFullUserInfo", $scope.loginEventDoesNotContainFullUserInfo);
+                avUserService.loginEventDoesNotContainFullUserInfo = $scope.loginEventDoesNotContainFullUserInfo;
+            };
+
             this.resetFormData = function() {
                 logger.debug("resetFormData called");
                 $scope.formData = {};
