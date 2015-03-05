@@ -1,6 +1,6 @@
 {
   "name": "angular-user-service",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "angular lib for create typical user service (interacts with login/auth to fetch from remote if needed)",
   "keywords": [
     "angular",
