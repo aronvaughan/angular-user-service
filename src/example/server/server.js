@@ -11,7 +11,8 @@ var userName = "admin";
 var passWord = "admin";
 var adminUser = {
     userName: userName,
-    name: "Admin User"
+    name: "Admin User",
+    roles: ["USER", "ADMIN"]
 };
 var currentUser = {};
 

@@ -25,6 +25,8 @@ angular.module('avaughan.user').provider('avUserService',
 
         this.userNameVariable = 'username';
 
+        this.userRolesVariable = 'roles';
+
         //sometimes the login event is different (and uncustomizalbe) from the user that is loaded via this server
         // if true, do NOT cache the login event user as the use and instead hit the
         //userresource url to load the user after a successfull event
@@ -52,6 +54,10 @@ angular.module('avaughan.user').provider('avUserService',
             }
             if (config.loginEventDoesNotContainFullUserInfo) {
                 this.loginEventDoesNotContainFullUserInfo = config.loginEventDoesNotContainFullUserInfo;
+            }
+
+            if (config.userRolesVariable) {
+                this.userRolesVariable = config.userRolesVariable;
             }
         };
 
@@ -165,7 +171,7 @@ angular.module('avaughan.user').provider('avUserService',
 
                     isLoggedIn: function() {
                         this.logger.debug('userService isLoggedIn ', this.getUser());
-                        return (this.getUser() !== undefined && this.getUser()[this.userNameVariable] !== undefined);
+                        return (this.getUser() !== undefined && this.getUser()[userService.userNameVariable] !== undefined);
                     },
 
                     getUser: function() {
@@ -175,6 +181,46 @@ angular.module('avaughan.user').provider('avUserService',
                             this.fetchUser();
                         }
                         return this.user;
+                    },
+
+                    getSecurityRoles: function() {
+                        this.logger.debug('user service, get security roles called');
+                        if (this.isLoggedIn()) {
+                            var user = this.getUser();
+                            this.logger.debug('user service, get security roles, returning ', [user, userService.userRolesVariable, user[userService.userRolesVariable]]);
+                            return user[userService.userRolesVariable];
+                        } else {
+                            this.logger.debug('not logged in, return blank roles')
+                            return []
+                        }
+                    },
+
+                    hasSecurityRoles: function(requiredRoles) {
+                        var hasRole = false,
+                            roleCheckPassed = false,
+                            loweredRoles;
+                        if (!this.isLoggedIn()) {
+                            hasRole = false;
+                        } else if (this.isLoggedIn() && requiredRoles === undefined) {
+                            hasRole = true;
+                        } else if (this.isLoggedIn() && requiredRoles !== undefined) {
+                            if (requiredRoles.length === 0) {
+                                hasRole = true;
+                            } else {
+                                loweredRoles = [];
+                                angular.forEach(this.getSecurityRoles(), function(role) {
+                                    loweredRoles.push(role.toLowerCase());
+                                });
+
+                                // check user has at least one role in given required roles
+                                angular.forEach(requiredRoles, function(role) {
+                                    roleCheckPassed = roleCheckPassed || _.contains(loweredRoles, role.toLowerCase());
+                                });
+                                hasRole = roleCheckPassed;
+                            }
+                        }
+
+                        return hasRole;
                     },
 
                     getUsername: function() {
@@ -276,4 +322,63 @@ angular.module('avaughan.user').provider('avUserService',
             }
         ];
     }
+);
+
+angular.module('avaughan.user').directive('visibleToRoles', [
+    'avUserService', 'avLog', '$rootScope',
+    function (avUserService, avLog, $rootScope) {
+
+        var logger = avLog.getLogger('visibleToRoles');
+        var self = this;
+
+
+
+        return {
+            link: function (scope, element, attrs) {
+                logger.debug('link called', attrs);
+                var makeVisible = function () {
+                        logger.debug('make visible', element);
+                        //element.removeClass('hidden');
+                        element.removeClass('ng-hide');
+                        //element.show();
+                    },
+                    makeHidden = function () {
+                        logger.debug('make hidden', element);
+                        //element.addClass('hidden');
+                        element.addClass('ng-hide');
+                        //element.hide();
+                    },
+                    determineVisibility = function (resetFirst) {
+                        logger.debug('determine visibility');
+                        if (resetFirst) {
+                            makeVisible();
+                        }
+
+                        if (avUserService.hasSecurityRoles(roles)) {
+                            logger.debug('has roles', [avUserService.getSecurityRoles(), roles]);
+                            makeVisible();
+                        } else {
+                            logger.debug('does not have roles', [avUserService.getSecurityRoles(), roles, element]);
+                            makeHidden();
+                        }
+                    },
+                    roles = attrs.visibleToRoles.split(',');
+                    logger.debug('roles ', roles);
+
+                $rootScope.$on('event:auth-loginConfirmed', function(event, user) {
+                    logger.info('event:auth-loginConfirmed user service got session login event ', event);
+                    determineVisibility(true);
+                });
+
+                $rootScope.$on('event:auth-logoutConfirmed', function(event, user) {
+                    logger.info('event:auth-logoutConfirmed user service got session login event ', event);
+                    determineVisibility(true);
+                });
+
+                if (roles.length > 0) {
+                    determineVisibility(true);
+                }
+            }
+        };
+    }]
 );

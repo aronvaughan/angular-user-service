@@ -170,6 +170,11 @@ See example in source code
 * deprecated this.initialize method
 * added flag, loginEventDoesNotContainFullUserInfo to config that specifies that the lower level avLogin event is NOT the user (the default) and this service should load the user on the login event from avLogin
 
+### v 0.0.7
+
+* add user roles
+* add directive to show content only to users with specific roles (see index.html for example usage)
+
 ## TODO
 
 * figure out integration tests (angular only allows unit or functional)

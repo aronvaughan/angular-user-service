@@ -20,6 +20,7 @@ angular.module('avaughan.user').provider('avUserService', function () {
   this.urlAfterLogin = '/';
   this.userResourceUrl = 'api/userInfo/current';
   this.userNameVariable = 'username';
+  this.userRolesVariable = 'roles';
   //sometimes the login event is different (and uncustomizalbe) from the user that is loaded via this server
   // if true, do NOT cache the login event user as the use and instead hit the
   //userresource url to load the user after a successfull event
@@ -45,6 +46,9 @@ angular.module('avaughan.user').provider('avUserService', function () {
     }
     if (config.loginEventDoesNotContainFullUserInfo) {
       this.loginEventDoesNotContainFullUserInfo = config.loginEventDoesNotContainFullUserInfo;
+    }
+    if (config.userRolesVariable) {
+      this.userRolesVariable = config.userRolesVariable;
     }
   };
   //DEPRECATED - used param based instead!!!!
@@ -162,6 +166,33 @@ angular.module('avaughan.user').provider('avUserService', function () {
             this.fetchUser();
           }
           return this.user;
+        },
+        getSecurityRoles: function () {
+          var user = this.getUser();
+          return user[this.userRolesVariable];
+        },
+        hasSecurityRoles: function (requiredRoles) {
+          var hasRole = false, roleCheckPassed = false, loweredRoles;
+          if (!this.isLoggedIn()) {
+            hasRole = false;
+          } else if (this.isLoggedIn() && requiredRoles === undefined) {
+            hasRole = true;
+          } else if (this.isLoggedIn() && requiredRoles !== undefined) {
+            if (requiredRoles.length === 0) {
+              hasRole = true;
+            } else {
+              loweredRoles = [];
+              angular.forEach(this.getSecurityRoles(), function (role) {
+                loweredRoles.push(role.toLowerCase());
+              });
+              // check user has at least one role in given required roles
+              angular.forEach(requiredRoles, function (role) {
+                roleCheckPassed = roleCheckPassed || _.contains(loweredRoles, role.toLowerCase());
+              });
+              hasRole = roleCheckPassed;
+            }
+          }
+          return hasRole;
         },
         getUsername: function () {
           this.logger.debug('getUsername ', [

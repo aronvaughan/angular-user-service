@@ -49,10 +49,20 @@
                 $scope.userInfo = avUserService.login($scope.formData.name, $scope.formData.password);
             };
 
+            $scope.roles = avUserService.getSecurityRoles();
+
+            $scope.hasRole = false;
+            $scope.hasRoleTextField = "ADMIN";
+
+            $scope.hasRoleCheck = function () {
+                $scope.hasRole = avUserService.hasSecurityRoles([$scope.hasRoleTextField]);
+            };
+
             $rootScope.$on('event:auth-loginConfirmed', function(event, user) {
                 logger.info("event:auth-loginConfirmed got session login event ", event);
                 logger.info("user data", user);
                 $scope.userInfo = user;
+                $scope.roles = avUserService.getSecurityRoles();
             });
 
             $rootScope.$on('event:auth-logoutConfirmed', function(event, user) {
