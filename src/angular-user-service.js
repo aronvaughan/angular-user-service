@@ -190,8 +190,8 @@ angular.module('avaughan.user').provider('avUserService',
                             this.logger.debug('user service, get security roles, returning ', [user, userService.userRolesVariable, user[userService.userRolesVariable]]);
                             return user[userService.userRolesVariable];
                         } else {
-                            this.logger.debug('not logged in, return blank roles')
-                            return []
+                            this.logger.debug('not logged in, return blank roles');
+                            return [];
                         }
                     },
 
@@ -326,29 +326,26 @@ angular.module('avaughan.user').provider('avUserService',
 
 angular.module('avaughan.user').directive('visibleToRoles', [
     'avUserService', 'avLog', '$rootScope',
-    function (avUserService, avLog, $rootScope) {
+    function(avUserService, avLog, $rootScope) {
 
         var logger = avLog.getLogger('visibleToRoles');
-        var self = this;
-
-
 
         return {
-            link: function (scope, element, attrs) {
+            link: function(scope, element, attrs) {
                 logger.debug('link called', attrs);
-                var makeVisible = function () {
+                var makeVisible = function() {
                         logger.debug('make visible', element);
                         //element.removeClass('hidden');
                         element.removeClass('ng-hide');
                         //element.show();
                     },
-                    makeHidden = function () {
+                    makeHidden = function() {
                         logger.debug('make hidden', element);
                         //element.addClass('hidden');
                         element.addClass('ng-hide');
                         //element.hide();
                     },
-                    determineVisibility = function (resetFirst) {
+                    determineVisibility = function(resetFirst) {
                         logger.debug('determine visibility');
                         if (resetFirst) {
                             makeVisible();
@@ -363,15 +360,15 @@ angular.module('avaughan.user').directive('visibleToRoles', [
                         }
                     },
                     roles = attrs.visibleToRoles.split(',');
-                    logger.debug('roles ', roles);
+                logger.debug('roles ', roles);
 
                 $rootScope.$on('event:auth-loginConfirmed', function(event, user) {
-                    logger.info('event:auth-loginConfirmed user service got session login event ', event);
+                    logger.info('event:auth-loginConfirmed user service got session login event ', [event, user]);
                     determineVisibility(true);
                 });
 
                 $rootScope.$on('event:auth-logoutConfirmed', function(event, user) {
-                    logger.info('event:auth-logoutConfirmed user service got session login event ', event);
+                    logger.info('event:auth-logoutConfirmed user service got session login event ', [event, user]);
                     determineVisibility(true);
                 });
 
@@ -380,5 +377,5 @@ angular.module('avaughan.user').directive('visibleToRoles', [
                 }
             }
         };
-    }]
-);
+    }
+]);

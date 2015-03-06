@@ -54,7 +54,7 @@
             $scope.hasRole = false;
             $scope.hasRoleTextField = "ADMIN";
 
-            $scope.hasRoleCheck = function () {
+            $scope.hasRoleCheck = function() {
                 $scope.hasRole = avUserService.hasSecurityRoles([$scope.hasRoleTextField]);
             };
 
