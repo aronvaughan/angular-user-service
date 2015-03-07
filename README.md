@@ -179,6 +179,10 @@ See example in source code
 
 * fix bug in v 0.0.6 release around loading the user after login event
 
+### v 0.0.9
+
+* fix bug in v 0.0.7 release when determining roles always use the more complete USER GET event
+
 ## TODO
 
 * figure out integration tests (angular only allows unit or functional)
