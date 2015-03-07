@@ -133,13 +133,16 @@ angular.module('avaughan.user').provider('avUserService',
                                 valueOfUserBeforeCall === undefined && avLogin.isTokenAvailable($rootScope, $cookieStore)) {
                                 self.logger.info('detected inital load with user token available');
                                 avLogin.loginConfirmed(value);
+
                             }
 
                             //send out a success user fetch event
-                            if (value !== undefined) {
+                            if (value !== undefined && value[userService.userNameVariable] !== undefined) {
                                 self.logger.debug('sending event: get success SERVICE.' + self.eventChannel + '.GET.SUCESS', [value, responseHeaders]);
                                 self.$rootScope.$broadcast('SERVICE.' + self.eventChannel + '.GET.SUCCESS', value);
                             }
+
+
                         });
 
                         this.logger.debug('got user', this.user);
@@ -287,14 +290,14 @@ angular.module('avaughan.user').provider('avUserService',
                         this.logger.info('custom initialize hooking up auth events', [dependencies, requirements]);
                         this.$rootScope.$on('event:auth-loginConfirmed', function(event, user) {
                             self.logger.info('event:auth-loginConfirmed user service got session login event ', event);
-                            self.logger.info('user data, does not contain full info', [user, self.loginEventDoesNotContainFullUserInfo]);
-                            if (self.loginEventDoesNotContainFullUserInfo === true || self.loginEventDoesNotContainFullUserInfo) {
+                            self.logger.info('user data, does not contain full info', [user, userService.loginEventDoesNotContainFullUserInfo]);
+                            if (userService.loginEventDoesNotContainFullUserInfo === true) {
                                 self.logger.info('login does not contain full user info, fetching user');
                                 //force a refetch
                                 self.checkedServer = false;
                                 self.fetchUser();
                             } else {
-                                self.logger.info('login does contain full user info, caching');
+                                self.logger.info('login does contain full user info, caching', user);
                                 self.setUser(user);
                             }
 

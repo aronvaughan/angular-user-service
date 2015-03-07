@@ -128,7 +128,7 @@ angular.module('avaughan.user').provider('avUserService', function () {
               avLogin.loginConfirmed(value);
             }
             //send out a success user fetch event
-            if (value !== undefined) {
+            if (value !== undefined && value[userService.userNameVariable] !== undefined) {
               self.logger.debug('sending event: get success SERVICE.' + self.eventChannel + '.GET.SUCESS', [
                 value,
                 responseHeaders
@@ -264,15 +264,15 @@ angular.module('avaughan.user').provider('avUserService', function () {
             self.logger.info('event:auth-loginConfirmed user service got session login event ', event);
             self.logger.info('user data, does not contain full info', [
               user,
-              self.loginEventDoesNotContainFullUserInfo
+              userService.loginEventDoesNotContainFullUserInfo
             ]);
-            if (self.loginEventDoesNotContainFullUserInfo === true || self.loginEventDoesNotContainFullUserInfo) {
+            if (userService.loginEventDoesNotContainFullUserInfo === true) {
               self.logger.info('login does not contain full user info, fetching user');
               //force a refetch
               self.checkedServer = false;
               self.fetchUser();
             } else {
-              self.logger.info('login does contain full user info, caching');
+              self.logger.info('login does contain full user info, caching', user);
               self.setUser(user);
             }
           });

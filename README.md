@@ -175,6 +175,10 @@ See example in source code
 * add user roles
 * add directive to show content only to users with specific roles (see index.html for example usage)
 
+### v 0.0.8
+
+* fix bug in v 0.0.6 release around loading the user after login event
+
 ## TODO
 
 * figure out integration tests (angular only allows unit or functional)
