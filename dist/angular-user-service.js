@@ -333,8 +333,8 @@ angular.module('avaughan.user').directive('visibleToRoles', [
             }
           }, roles = attrs.visibleToRoles.split(',');
         logger.debug('roles ', roles);
-        $rootScope.$on('event:auth-loginConfirmed', function (event, user) {
-          logger.info('event:auth-loginConfirmed user service got session login event ', [
+        $rootScope.$on('SERVICE.' + avUserService.eventChannel + '.GET.SUCCESS', function (event, user) {
+          logger.info('SERVICE.' + avUserService.eventChannel + '.GET.SUCCESS user service got session login event ', [
             event,
             user
           ]);
